@@ -1,0 +1,5 @@
+.env
+pdfjson-backend
+*.log
+.DS_Store
+
