@@ -1,5 +1,5 @@
 ## Multi-stage build: build with golang:alpine, run on minimal alpine
-FROM golang:alpine AS builder
+FROM --platform=$BUILDPLATFORM golang:alpine AS builder
 
 WORKDIR /src
 
@@ -13,12 +13,13 @@ RUN go mod download
 # Copy the rest of the source
 COPY . .
 
-# Build a static-ish binary to simplify runtime deps
-ENV CGO_ENABLED=0 GOOS=linux GOARCH=amd64
+# Build a static-ish binary matching the target platform
+ARG TARGETOS TARGETARCH
+ENV CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH
 RUN go build -ldflags="-s -w" -o /bin/server ./main.go
 
 # Final minimal runtime image
-FROM alpine:3.20
+FROM --platform=$TARGETPLATFORM alpine:3.20
 
 RUN apk add --no-cache ca-certificates && update-ca-certificates \
     && adduser -D -H -u 10001 appuser
