@@ -1,0 +1,13 @@
+# VCS and build artifacts
+.git
+.gitignore
+pdfjson-backend
+
+# Env and local files
+.env
+.DS_Store
+
+# Docker metadata
+Dockerfile
+docker-compose.yml
+

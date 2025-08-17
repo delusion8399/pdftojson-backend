@@ -311,7 +311,7 @@ func main() {
     mux.Handle("/api/parse", rl.Middleware(http.HandlerFunc(parseHandler)))
     mux.HandleFunc("/healthz", healthHandler)
 
-	addr := ":8080"
+	addr := ":7000"
 	log.Println("Backend listening on", addr)
 	if err := http.ListenAndServe(addr, mux); err != nil {
 		log.Fatal(err)
